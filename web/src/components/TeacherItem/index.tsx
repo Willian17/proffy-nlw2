@@ -1,37 +1,55 @@
-import React from 'react'
+import React from "react";
+import whatsappIcon from "../../assets/images/icons/whatsapp.svg";
+import api from "../../services/api";
+import "./styles.css";
 
-import whatsAppIcon from '../../assets/images/icons/whatsapp.svg'
-import './styles.css'
-
-const TeacherItem: React.FC = ()=> {
-    return (
-        <article className="teacher-item">
-        <header>
-          <img src="https://avatars2.githubusercontent.com/u/53010824?s=400&u=40f41a9ce155fe1a214f422849ad88fd7f0b9710&v=4" alt="avatar" />
-          <div>
-            <strong>Willian</strong>
-            <span>Química</span>
-          </div>
-        </header>
-  
-        <p>
-          Entusiasta das melhores tecnologias de química avançada.
-          <br></br>
-          Apaixonado por explodir coisas em laboratório e por mudar
-          a vida 
-        </p>
-        <footer>
-          <p>
-            Preço/hora
-            <strong>R$ 80,00</strong>
-          </p>
-          <button type="button">
-            <img src={whatsAppIcon} alt="whatsapp"/>
-              Entrar em contato
-          </button>
-        </footer>
-      </article>
-    )
+export interface Teacher {
+  avatar: string;
+  bio: string;
+  cost: number;
+  id: number;
+  name: string;
+  subject: string;
+  whatsapp: string;
 }
 
-export default TeacherItem
+interface TeacherItemProps {
+  teacher: Teacher;
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
+  function createNewConnection() {
+    api.post("connections", {
+      user_id: teacher.id,
+    });
+  }
+
+  return (
+    <article className="teacher-item">
+      <header>
+        <img src={teacher.avatar} alt={teacher.name} />
+        <div>
+          <strong>{teacher.name}</strong>
+          <span>{teacher.subject}</span>
+        </div>
+      </header>
+      <p>{teacher.bio}</p>
+      <footer>
+        <p>
+          Preço/hora
+          <strong>R$ {teacher.cost}</strong>
+        </p>
+        <a
+          target="_blank" rel="noopener noreferrer"
+          href={`http://wa.me/${teacher.whatsapp}`}
+          onClick={createNewConnection}
+        >
+          <img src={whatsappIcon} alt="Whatsapp" />
+          Entrar em contato
+        </a>
+      </footer>
+    </article>
+  );
+};
+
+export default TeacherItem;
