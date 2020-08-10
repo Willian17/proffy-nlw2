@@ -13,7 +13,7 @@ interface PageHeaderProps {
     headerRight?: ReactNode;
   }
   
-  const PageHeader: React.FC<PageHeaderProps> = ({title}) => {
+  const PageHeader: React.FC<PageHeaderProps> = ({title , headerRight, children}) => {
     const { navigate } = useNavigation();
     function handleGoBack() {
         navigate("Landing");
@@ -31,9 +31,12 @@ interface PageHeaderProps {
     
           <View style={styles.header}>
             <Text style={styles.title}>
-                {title}
+                { title }
             </Text>
+            {headerRight}
           </View>
+
+          {children}
 
         </View>
       );
